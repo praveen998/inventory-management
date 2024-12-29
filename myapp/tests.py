@@ -1,3 +1,10 @@
-from django.test import TestCase
+import pytest
+from .utils import addnum
 
-# Create your tests here.
+def test_add_num():
+    result1=addnum(5,6)
+    assert result1==11
+    result2=addnum(6,8)
+    assert result2==14
+
+  
