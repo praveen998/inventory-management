@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'middleware.firebase_auth.FirebaseAuthMiddleware',
 ]
 
 
@@ -77,9 +78,13 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+       'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'inventory',  # Replace with your database name
+        'USER': 'praveen',      # Replace with your MySQL username
+        'PASSWORD': 'praveen',  # Replace with your MySQL password
+        'HOST': 'localhost',          # Or the database server address
+        'PORT': '3306',               # Default MySQL port
     }
 }
 
