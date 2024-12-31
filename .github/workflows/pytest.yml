@@ -1,4 +1,4 @@
-name: Django CI/CD with MySQL
+name: Django CI/CD with SQLite
 
 on:
   push:
@@ -11,18 +11,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:8.0
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: praveen
-          MYSQL_DATABASE: inventory
-          MYSQL_USER: praveen
-          MYSQL_PASSWORD: praveen
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
       - name: Checkout code
@@ -38,21 +26,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Set up Django database settings for MySQL
+      - name: Set up Django database settings for SQLite
         run: |
-          sed -i "s|'ENGINE': 'django.db.backends.sqlite3'|'ENGINE': 'django.db.backends.mysql'|" myproject/settings.py
-          sed -i "s|'NAME': BASE_DIR / 'db.sqlite3'|'NAME': 'inventory'|" myproject/settings.py
-          sed -i "s|'USER': ''|'USER': 'praveen'|" myproject/settings.py
-          sed -i "s|'PASSWORD': ''|'PASSWORD': 'praveen'|" myproject/settings.py
-          sed -i "s|'HOST': '127.0.0.1'|'HOST': 'mysql'|" myproject/settings.py  # Corrected to use service name 'mysql'
-          sed -i "s|'PORT': '3306'|'PORT': '3306'|" myproject/settings.py
-
-      - name: Wait for MySQL to be ready
-        run: |
-          until mysql -h mysql -u praveen -ppraveen -e "SELECT 1"; do  # Corrected to use service name 'mysql'
-            echo "Waiting for MySQL..."
-            sleep 5
-          done
+          sed -i "s|'ENGINE': 'django.db.backends.mysql'|'ENGINE': 'django.db.backends.sqlite3'|" myproject/settings.py
+          sed -i "s|'NAME': 'inventory'|'NAME': BASE_DIR / 'db.sqlite3'|" myproject/settings.py  # Use a SQLite file in the project folder
 
       - name: Run migrations
         run: |

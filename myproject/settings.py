@@ -76,14 +76,11 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+
 DATABASES = {
-       'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'inventory',  # Replace with your database name
-        'USER': 'praveen',      # Replace with your MySQL username
-        'PASSWORD': 'praveen',  # Replace with your MySQL password
-        'HOST': '127.0.0.1',          # Or the database server address
-        'PORT': '3306',               # Default MySQL port
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Use SQLite
+        'NAME': BASE_DIR / 'db.sqlite3',         # Database file location
     }
 }
 
