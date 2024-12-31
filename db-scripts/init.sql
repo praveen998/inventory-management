@@ -1,2 +1,0 @@
-GRANT ALL PRIVILEGES ON inventory.* TO 'praveen'@'%' IDENTIFIED BY 'praveen';
-FLUSH PRIVILEGES;
