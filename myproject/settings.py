@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'inventory',  # Replace with your database name
         'USER': 'praveen',      # Replace with your MySQL username
         'PASSWORD': 'praveen',  # Replace with your MySQL password
-        'HOST': 'localhost',          # Or the database server address
+        'HOST': '127.0.0.1',          # Or the database server address
         'PORT': '3306',               # Default MySQL port
     }
 }
