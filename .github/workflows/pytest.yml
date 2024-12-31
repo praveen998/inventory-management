@@ -44,7 +44,7 @@ jobs:
           sed -i "s|'NAME': BASE_DIR / 'db.sqlite3'|'NAME': 'inventory'|" myproject/settings.py
           sed -i "s|'USER': ''|'USER': 'praveen'|" myproject/settings.py
           sed -i "s|'PASSWORD': ''|'PASSWORD': 'praveen'|" myproject/settings.py
-          sed -i "s|'HOST': 'localhost'|'HOST': 'localhost'|" myproject/settings.py
+          sed -i "s|'HOST': '127.0.0.1'|'HOST': '127.0.0.1'|" myproject/settings.py
           sed -i "s|'PORT': '3306'|'PORT': '3306'|" myproject/settings.py
 
       - name: Wait for MySQL to be ready
