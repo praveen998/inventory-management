@@ -38,6 +38,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install mysqlclient==2.1.1
+          sudo systemctl start mysql
 
       - name: Set up Django database settings for MySQL
         run: |
