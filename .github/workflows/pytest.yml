@@ -23,7 +23,7 @@ jobs:
           MYSQL_USER: praveen
           MYSQL_PASSWORD: praveen
         volumes:
-          - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the SQL script to MySQL's init directory
+          - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
@@ -46,12 +46,12 @@ jobs:
           sed -i "s|'NAME': BASE_DIR / 'db.sqlite3'|'NAME': 'inventory'|" myproject/settings.py
           sed -i "s|'USER': ''|'USER': 'praveen'|" myproject/settings.py
           sed -i "s|'PASSWORD': ''|'PASSWORD': 'praveen'|" myproject/settings.py
-          sed -i "s|'HOST': '127.0.0.1'|'HOST': '127.0.0.1'|" myproject/settings.py
+          sed -i "s|'HOST': '127.0.0.1'|'HOST': 'mysql'|" myproject/settings.py  # Corrected to use service name 'mysql'
           sed -i "s|'PORT': '3306'|'PORT': '3306'|" myproject/settings.py
 
       - name: Wait for MySQL to be ready
         run: |
-          until mysql -h 127.0.0.1 -u praveen -ppraveen -e "SELECT 1"; do
+          until mysql -h mysql -u praveen -ppraveen -e "SELECT 1"; do  # Corrected to use service name 'mysql'
             echo "Waiting for MySQL..."
             sleep 5
           done
