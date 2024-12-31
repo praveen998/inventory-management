@@ -40,12 +40,12 @@ jobs:
 
       - name: Set up Django database settings for MySQL
         run: |
-          sed -i "s/'ENGINE': 'django.db.backends.sqlite3'/'ENGINE': 'django.db.backends.mysql'/" your_project/settings.py
-          sed -i "s/'NAME': BASE_DIR / 'db.sqlite3'/'NAME': 'inventory'/" your_project/settings.py
-          sed -i "s/'USER': ''/'USER': 'praveen'/" your_project/settings.py
-          sed -i "s/'PASSWORD': ''/'PASSWORD': 'praveen'/" your_project/settings.py
-          sed -i "s/'HOST': 'localhost'/'HOST': 'localhost'/" your_project/settings.py
-          sed -i "s/'PORT': '3306'/'PORT': '3306'/" your_project/settings.py
+          sed -i "s/'ENGINE': 'django.db.backends.sqlite3'/'ENGINE': 'django.db.backends.mysql'/" myproject/settings.py
+          sed -i "s/'NAME': BASE_DIR / 'db.sqlite3'/'NAME': 'inventory'/" myproject/settings.py
+          sed -i "s/'USER': ''/'USER': 'praveen'/" myproject/settings.py
+          sed -i "s/'PASSWORD': ''/'PASSWORD': 'praveen'/" myproject/settings.py
+          sed -i "s/'HOST': 'localhost'/'HOST': 'localhost'/" myproject/settings.py
+          sed -i "s/'PORT': '3306'/'PORT': '3306'/" myproject/settings.py
 
       - name: Run migrations
         run: |
