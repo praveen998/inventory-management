@@ -23,7 +23,7 @@ jobs:
           MYSQL_USER: praveen
           MYSQL_PASSWORD: praveen
         volumes:
-            - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the SQL script to MySQL's init directory
+          - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the SQL script to MySQL's init directory
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
