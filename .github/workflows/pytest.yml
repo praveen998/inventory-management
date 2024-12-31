@@ -22,8 +22,6 @@ jobs:
           MYSQL_DATABASE: inventory
           MYSQL_USER: praveen
           MYSQL_PASSWORD: praveen
-        volumes:
-          - ./db-scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
 
     steps:
