@@ -1,10 +1,9 @@
-name: Django Tests
+name: Django Tests with MySQL
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
@@ -12,6 +11,18 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: praveen
+          MYSQL_DATABASE: inventory
+          MYSQL_USER: praveen
+          MYSQL_PASSWORD: praveen
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
@@ -27,7 +38,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Set up Django database settings for MySQL
+        run: |
+          sed -i "s/'ENGINE': 'django.db.backends.sqlite3'/'ENGINE': 'django.db.backends.mysql'/" your_project/settings.py
+          sed -i "s/'NAME': BASE_DIR / 'db.sqlite3'/'NAME': 'inventory'/" your_project/settings.py
+          sed -i "s/'USER': ''/'USER': 'praveen'/" your_project/settings.py
+          sed -i "s/'PASSWORD': ''/'PASSWORD': 'praveen'/" your_project/settings.py
+          sed -i "s/'HOST': 'localhost'/'HOST': 'localhost'/" your_project/settings.py
+          sed -i "s/'PORT': '3306'/'PORT': '3306'/" your_project/settings.py
+
+      - name: Run migrations
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+
       - name: Run pytest
         run: |
           pytest
-          
