@@ -1,8 +1,11 @@
 import pytest
 from .utils import addnum
-from myapp.models import DemoModel
+from myapp.models import DemoModel,Book
 from django.db import connection,transaction
-
+from graphene.test import Client
+from graphene_django.utils.testing import graphql_query
+from myapp.schema import Schema
+import json
 
 def test_add_num():
     result1=addnum(5,6)
@@ -42,5 +45,32 @@ def test_insert_using_cursor():
     assert row[0] == title
     assert row[1] == description
 
+@pytest.mark.django_db
+def test_query_all_books(client):
+    # Create test data
+    Book.objects.create(title="Book 1", author="Author 1", published_date="2023-01-01")
+    Book.objects.create(title="Book 2", author="Author 2", published_date="2023-02-01")
+    response = client.post(
+        '/graphql/',
+        data=json.dumps({
+            'query': """
+                query {
+                    allBooks {
+                        id
+                        title
+                        author
+                        publishedDate
+                    }
+                }
+            """
+        }),
+        content_type='application/json'
+    )
+    assert response.status_code == 200
 
-
+    # Check the response content
+    response_data = response.json()
+    assert "data" in response_data
+    assert "allBooks" in response_data["data"]
+    all_books = response_data["data"]["allBooks"]
+    assert all_books is not None, "allBooks data is None"
