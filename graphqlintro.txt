@@ -1,0 +1,7 @@
+understanding basic of graphql------------------
+1.query         (fetch data (equalent to GET in REST))
+2.mutation      (modify data (equalent to POST/PUT/UPDATE in REST))
+3.subscription  (real time dataupdate (optional require aditional setup))
+4.schema        (describe the types, queries,mutations vailable in your api)
+
+
