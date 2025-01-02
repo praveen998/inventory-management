@@ -1,10 +1,8 @@
 import pytest
 from .utils import addnum
-from myapp.models import DemoModel,Book
+from myapp.models import DemoModel,Book,Author
 from django.db import connection,transaction
-from graphene.test import Client
 from graphene_django.utils.testing import graphql_query
-from myapp.schema import Schema
 import json
 
 def test_add_num():
@@ -45,32 +43,39 @@ def test_insert_using_cursor():
     assert row[0] == title
     assert row[1] == description
 
+
+
+# Create test data---------------------------------------------------------
+@pytest.fixture
+def create_test_data():
+    author = Author.objects.create(name="J.K. Rowling", birth_date="1965-07-31")
+    Book.objects.create(title="Harry Potter", author=author, published_date="1997-06-26")
+    return {"author": author}
+
+# Test: Query all books
 @pytest.mark.django_db
-def test_query_all_books(client):
-    # Create test data
-    Book.objects.create(title="Book 1", author="Author 1", published_date="2023-01-01")
-    Book.objects.create(title="Book 2", author="Author 2", published_date="2023-02-01")
+def test_query_all_books(client, create_test_data):
     response = client.post(
-        '/graphql/',
-        data=json.dumps({
-            'query': """
+        "/graphql/",
+        data={
+            "query": """
                 query {
                     allBooks {
                         id
                         title
-                        author
+                        author {
+                            name
+                        }
                         publishedDate
                     }
                 }
             """
-        }),
-        content_type='application/json'
+        },
+        content_type="application/json",
     )
+     
     assert response.status_code == 200
-
-    # Check the response content
-    response_data = response.json()
-    assert "data" in response_data
-    assert "allBooks" in response_data["data"]
-    all_books = response_data["data"]["allBooks"]
-    assert all_books is not None, "allBooks data is None"
+    data = response.json()["data"]["allBooks"]
+    assert len(data) == 1
+    assert data[0]["title"] == "Harry Potter"
+    assert data[0]["author"]["name"] == "J.K. Rowling"

@@ -35,6 +35,8 @@ class Query(graphene.ObjectType):
     def resolve_book_by_id(self, info, id):
         return Book.objects.get(pk=id)
 
+
+
 #mutation
 class CreateAuthor(graphene.Mutation):
     class Arguments:
@@ -63,7 +65,10 @@ class Create_Book(graphene.Mutation):
         book=Book.objects.create(title=title,author=author,published_date=published_date)
         return Create_Book(book=book)
 
+
+
 class Mutation(graphene.ObjectType):
     create_author=CreateAuthor.Field()
     create_book=Create_Book.Field()
+
 
