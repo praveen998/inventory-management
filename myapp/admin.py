@@ -7,6 +7,8 @@ from .models import Author, Book
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name', 'birth_date')
 
+
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'published_date')
+

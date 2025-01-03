@@ -8,6 +8,7 @@ class DemoModel(models.Model):
     description = models.TextField()    
 
 
+
 class Author(models.Model):
     name = models.CharField(max_length=255)
     birth_date = models.DateField()
@@ -15,7 +16,6 @@ class Author(models.Model):
     def __str__(self):
         return self.name
     
-
 
 class Book(models.Model):
     title = models.CharField(max_length=255)
@@ -25,4 +25,4 @@ class Book(models.Model):
     def __str__(self):
         return self.title
     
-    
+

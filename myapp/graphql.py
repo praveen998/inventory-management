@@ -9,6 +9,7 @@ class AuthorType(DjangoObjectType):
         model=Author
         fields=("id","name","birth_date","books")
 
+
 #define book type
 class BookType(DjangoObjectType):
     class Meta:
@@ -66,9 +67,32 @@ class Create_Book(graphene.Mutation):
         return Create_Book(book=book)
 
 
+class updateAuthor(graphene.Mutation):
+    class Arguments:
+        id=graphene.ID(required=True)
+        name=graphene.String()
+        birth_date=graphene.String()
+
+    author=graphene.Field(AuthorType)
+
+    def mutate(self,info,id,name=None,birth_date=None):
+        try:
+            author=Author.objects.get(pk=id)
+            if name:
+                author.name=name
+            if birth_date:
+                author.birth_date=birth_date
+            author.save()
+            return updateAuthor(author=author)
+        except Author.DoesNotExist:
+            raise Exception("author not found")
+
 
 class Mutation(graphene.ObjectType):
     create_author=CreateAuthor.Field()
     create_book=Create_Book.Field()
+    update_author=updateAuthor.Field()
+
+    
 
 

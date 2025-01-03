@@ -52,6 +52,7 @@ def create_test_data():
     Book.objects.create(title="Harry Potter", author=author, published_date="1997-06-26")
     return {"author": author}
 
+
 # Test: Query all books
 @pytest.mark.django_db
 def test_query_all_books(client, create_test_data):
@@ -79,3 +80,34 @@ def test_query_all_books(client, create_test_data):
     assert len(data) == 1
     assert data[0]["title"] == "Harry Potter"
     assert data[0]["author"]["name"] == "J.K. Rowling"
+
+
+@pytest.mark.django_db
+def test_create_author_mutation(client):
+    """Test to create a new author using GraphQL."""
+    response = client.post(
+        "/graphql/",
+        data={
+            "query": """
+                mutation CreateAuthor($name: String!, $birthDate: Date!) {
+                    createAuthor(name: $name, birthDate: $birthDate) {
+                        author {
+                            id
+                            name
+                            birthDate
+                        }
+                    }
+                }
+            """,
+            "variables": {
+                "name": "George R.R. Martin",
+                "birthDate": "1948-09-20",
+            },
+        },
+        content_type="application/json",
+    )
+    assert response.status_code == 200
+    data = response.json()["data"]["createAuthor"]["author"]
+    assert data["name"] == "George R.R. Martin"
+    assert data["birthDate"] == "1948-09-20"
+    
