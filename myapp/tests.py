@@ -106,8 +106,11 @@ def test_create_author_mutation(client):
         },
         content_type="application/json",
     )
+    
+
     assert response.status_code == 200
     data = response.json()["data"]["createAuthor"]["author"]
     assert data["name"] == "George R.R. Martin"
     assert data["birthDate"] == "1948-09-20"
+    
     
